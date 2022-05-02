@@ -71,11 +71,35 @@
 </div>
 
 <script>
-	const getDays = () => {
+	const getDays = (diff) => {
 		const days = Math.floor(diff / (1000 * 60 * 60 * 24));
 		return {
 			value: days,
-			string: days === 0 ? "" : `${days}`,
+			string: days < 10 ? `0${days}:` : `${days}:`,
+		};
+	};
+
+	const getHours = (diff) => {
+		const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		return {
+			value: hours,
+			string: hours < 10 ? `0${hours}:` : `${hours}:`,
+		};
+	};
+
+	const getMinutes = (diff) => {
+		const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+		return {
+			value: minutes,
+			string: minutes < 10 ? `0${minutes}:` : `${minutes}:`,
+		};
+	};
+
+	const getSeconds = (diff) => {
+		const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+		return {
+			value: seconds,
+			string: seconds < 10 ? `0${seconds}` : `${seconds}`,
 		};
 	};
 
@@ -122,19 +146,12 @@
 				: "since The Stanley Parable: Ultra Deluxe launched";
 		const diff = Math.abs(releaseTime - now);
 
-		const days = getDays();
-		let hoursTillRelease = Math.floor(diff / 3600000);
-		let minutesTillRelease = Math.floor((diff / 60000) % 60);
-		let secondsTillRelease = Math.floor(((diff / 1000) % 60) % 60);
+		const days = getDays(diff);
+		const hours = getHours(diff);
+		const minutes = getMinutes(diff);
+		const seconds = getSeconds(diff);
 
-		hoursTillRelease =
-			hoursTillRelease < 10 ? `0${hoursTillRelease}` : hoursTillRelease;
-		minutesTillRelease =
-			minutesTillRelease < 10 ? `0${minutesTillRelease}` : minutesTillRelease;
-		secondsTillRelease =
-			secondsTillRelease < 10 ? `0${secondsTillRelease}` : secondsTillRelease;
-
-		const countdownString = `${days.string}${hoursTillRelease}${minutesTillRelease}${secondsTillRelease}`;
+		const countdownString = `${days.string}${hours.string}${minutes.string}${seconds.string}`;
 
 		const sequence = findSequenceInString("427", countdownString);
 		const tempDiv = document.createElement("div");
@@ -144,9 +161,6 @@
 			span.innerText = countdownString[i];
 			span.style.color = sequence.includes(i) ? "yellow" : "white";
 			tempDiv.appendChild(span);
-			if (i === 1 || i === 3) {
-				tempDiv.appendChild(document.createTextNode(":"));
-			}
 		}
 
 		timeDiv.innerHTML = tempDiv.innerHTML;
@@ -157,6 +171,7 @@
 <script>
 	// TODO: calc how much items needed for current screen size
 	// TODO: slide like animation for the wall of text
+	// TODO: make the lines unaligned
 	const theEndDiv = document.querySelector("#theEnd");
 	const theEndMessage = new Array(1000)
 		.fill(undefined)
