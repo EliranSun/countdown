@@ -1,0 +1,167 @@
+<style>
+	html,
+	body {
+		background-color: rgba(0, 0, 0, 0);
+	}
+
+	@font-face {
+		font-family: stanleyFont;
+		src: url("./LeagueGothic-Regular.ttf");
+	}
+
+	.countdown {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+	}
+
+	#message {
+		color: white;
+	}
+
+	#time {
+		font-family: stanleyFont;
+		font-size: 20em;
+		font-weight: bold;
+		color: white;
+		display: flex;
+	}
+
+	#time span {
+		width: 115px;
+		display: flex;
+		justify-content: center;
+	}
+
+	img {
+		max-width: 100vw;
+		margin: auto;
+	}
+
+	#theEnd {
+		position: fixed;
+		z-index: -1;
+		width: 100vw;
+		height: 100vh;
+		top: 0;
+		left: 0;
+		background-color: black;
+		color: rgba(255, 255, 255, 0.07);
+		font-family: stanleyFont;
+		text-align: justify;
+		font-size: 2em;
+	}
+</style>
+
+<div id="theEnd"></div>
+<div class="countdown">
+	<img
+		src="https://nintendoeverything.com/wp-content/uploads/The-Stanley-Parable-Ultra-Deluxe.jpg"
+	/>
+	<div id="time">
+		<span>0</span>
+		<span>0</span>:
+		<span>0</span>
+		<span>0</span>:
+		<span>0</span>
+		<span>0</span>
+	</div>
+	<div id="message"></div>
+</div>
+
+<script>
+	const getDays = () => {
+		const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+		return {
+			value: days,
+			string: days === 0 ? "" : `${days}`,
+		};
+	};
+
+	const isArrayItemsAscending = (arrayItems) => {
+		for (let i = 0; i < arrayItems.length - 1; i++) {
+			if (arrayItems[i] > arrayItems[i + 1]) {
+				return false;
+			}
+		}
+		return true;
+	};
+
+	const findSequenceInString = (sequence = "427", value = "") => {
+		const arrayValue = value.split("");
+		const indexesFound = [];
+		for (let i = 0; i < sequence.length; i++) {
+			const indexOf = arrayValue.indexOf(sequence[i]);
+			if (indexOf !== -1) {
+				indexesFound.push(indexOf);
+			}
+		}
+
+		if (
+			indexesFound.length === sequence.length &&
+			isArrayItemsAscending(indexesFound)
+		) {
+			return indexesFound;
+		}
+
+		return [];
+	};
+
+	const THE_STANLEY_PARABLE_ULTRA_DELUXE_RELEASE_DATE_IN_MS = 1651075200000;
+	const timestamp = THE_STANLEY_PARABLE_ULTRA_DELUXE_RELEASE_DATE_IN_MS;
+	const timeDiv = document.querySelector("#time");
+	const messageDiv = document.querySelector("#message");
+
+	setInterval(() => {
+		const now = Date.now();
+		const releaseTime = new Date(timestamp).getTime();
+		const message =
+			releaseTime - now > 0
+				? "until The Stanley Parable: Ultra Deluxe launch"
+				: "since The Stanley Parable: Ultra Deluxe launched";
+		const diff = Math.abs(releaseTime - now);
+
+		const days = getDays();
+		let hoursTillRelease = Math.floor(diff / 3600000);
+		let minutesTillRelease = Math.floor((diff / 60000) % 60);
+		let secondsTillRelease = Math.floor(((diff / 1000) % 60) % 60);
+
+		hoursTillRelease =
+			hoursTillRelease < 10 ? `0${hoursTillRelease}` : hoursTillRelease;
+		minutesTillRelease =
+			minutesTillRelease < 10 ? `0${minutesTillRelease}` : minutesTillRelease;
+		secondsTillRelease =
+			secondsTillRelease < 10 ? `0${secondsTillRelease}` : secondsTillRelease;
+
+		const countdownString = `${days.string}${hoursTillRelease}${minutesTillRelease}${secondsTillRelease}`;
+
+		const sequence = findSequenceInString("427", countdownString);
+		const tempDiv = document.createElement("div");
+
+		for (let i = 0; i < countdownString.length; i++) {
+			const span = document.createElement("span");
+			span.innerText = countdownString[i];
+			span.style.color = sequence.includes(i) ? "yellow" : "white";
+			tempDiv.appendChild(span);
+			if (i === 1 || i === 3) {
+				tempDiv.appendChild(document.createTextNode(":"));
+			}
+		}
+
+		timeDiv.innerHTML = tempDiv.innerHTML;
+		messageDiv.innerText = message;
+	}, 1000);
+</script>
+
+<script>
+	// TODO: calc how much items needed for current screen size
+	// TODO: slide like animation for the wall of text
+	const theEndDiv = document.querySelector("#theEnd");
+	const theEndMessage = new Array(1000)
+		.fill(undefined)
+		.map((item) => "THE END IS NEVER")
+		.join(" ");
+
+	theEndDiv.innerText = theEndMessage;
+</script>
