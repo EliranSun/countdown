@@ -1,194 +1,198 @@
-<head>
-	<style>
-		html,
-		body {
-			background-color: rgba(0, 0, 0, 0);
-		}
+<html>
+	<head>
+		<style>
+			html,
+			body {
+				background-color: rgba(0, 0, 0, 0);
+			}
 
-		@font-face {
-			font-family: stanleyFont;
-			src: url("./LeagueGothic-Regular.ttf");
-		}
+			@font-face {
+				font-family: stanleyFont;
+				src: url("./LeagueGothic-Regular.ttf");
+			}
 
-		.countdown {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-direction: column;
-		}
+			.countdown {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex-direction: column;
+			}
 
-		#message {
-			color: white;
-		}
+			#message {
+				color: white;
+			}
 
-		#time {
-			font-family: stanleyFont;
-			font-size: 20em;
-			font-weight: bold;
-			color: white;
-			display: flex;
-		}
+			#time {
+				font-family: stanleyFont;
+				font-size: 20em;
+				font-weight: bold;
+				color: white;
+				display: flex;
+			}
 
-		#time span {
-			width: 115px;
-			display: flex;
-			justify-content: center;
-		}
+			#time span {
+				width: 115px;
+				display: flex;
+				justify-content: center;
+			}
 
-		img {
-			max-width: 100vw;
-			margin: auto;
-		}
+			img {
+				max-width: 100vw;
+				margin: auto;
+			}
 
-		#theEnd {
-			position: fixed;
-			z-index: -1;
-			width: 100vw;
-			height: 100vh;
-			top: 0;
-			left: 0;
-			background-color: black;
-			color: rgba(255, 255, 255, 0.07);
-			font-family: stanleyFont;
-			text-align: justify;
-			font-size: 2em;
-		}
-	</style>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"
-		integrity="sha512-zhHQR0/H5SEBL3Wn6yYSaTTZej12z0hVZKOv3TwCUXT1z5qeqGcXJLLrbERYRScEDDpYIJhPC1fk31gqR783iQ=="
-		crossorigin="anonymous"
-		defer
-	></script>
-	<script src="./map.js" defer></script>
-</head>
-<body>
-	<div id="theEnd"></div>
-	<div class="countdown">
-		<img
-			src="https://nintendoeverything.com/wp-content/uploads/The-Stanley-Parable-Ultra-Deluxe.jpg"
-		/>
-		<div id="time">
-			<span>0</span>
-			<span>0</span>:
-			<span>0</span>
-			<span>0</span>:
-			<span>0</span>
-			<span>0</span>
+			#theEnd {
+				position: fixed;
+				z-index: -1;
+				width: 100vw;
+				height: 100vh;
+				top: 0;
+				left: 0;
+				background-color: black;
+				color: rgba(255, 255, 255, 0.07);
+				font-family: stanleyFont;
+				text-align: justify;
+				font-size: 2em;
+			}
+		</style>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"
+			integrity="sha512-zhHQR0/H5SEBL3Wn6yYSaTTZej12z0hVZKOv3TwCUXT1z5qeqGcXJLLrbERYRScEDDpYIJhPC1fk31gqR783iQ=="
+			crossorigin="anonymous"
+			defer
+		></script>
+		<script src="./map.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="theEnd"></div>
+		<div class="countdown">
+			<img
+				src="https://nintendoeverything.com/wp-content/uploads/The-Stanley-Parable-Ultra-Deluxe.jpg"
+			/>
+			<div id="time">
+				<span>0</span>
+				<span>0</span>:
+				<span>0</span>
+				<span>0</span>:
+				<span>0</span>
+				<span>0</span>
+			</div>
+			<div id="message"></div>
 		</div>
-		<div id="message"></div>
-	</div>
 
-	<canvas id="glCanvas" width="640" height="480"></canvas>
-</body>
+		<canvas id="glCanvas" width="640" height="480"></canvas>
 
-<script>
-	const getDays = (diff) => {
-		const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-		return {
-			value: days,
-			string: days < 10 ? `0${days}:` : `${days}:`,
-		};
-	};
+		<script>
+			const getDays = (diff) => {
+				const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+				return {
+					value: days,
+					string: days < 10 ? `0${days}:` : `${days}:`,
+				};
+			};
 
-	const getHours = (diff) => {
-		const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		return {
-			value: hours,
-			string: hours < 10 ? `0${hours}:` : `${hours}:`,
-		};
-	};
+			const getHours = (diff) => {
+				const hours = Math.floor(
+					(diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+				);
+				return {
+					value: hours,
+					string: hours < 10 ? `0${hours}:` : `${hours}:`,
+				};
+			};
 
-	const getMinutes = (diff) => {
-		const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-		return {
-			value: minutes,
-			string: minutes < 10 ? `0${minutes}:` : `${minutes}:`,
-		};
-	};
+			const getMinutes = (diff) => {
+				const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+				return {
+					value: minutes,
+					string: minutes < 10 ? `0${minutes}:` : `${minutes}:`,
+				};
+			};
 
-	const getSeconds = (diff) => {
-		const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-		return {
-			value: seconds,
-			string: seconds < 10 ? `0${seconds}` : `${seconds}`,
-		};
-	};
+			const getSeconds = (diff) => {
+				const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+				return {
+					value: seconds,
+					string: seconds < 10 ? `0${seconds}` : `${seconds}`,
+				};
+			};
 
-	const isArrayItemsAscending = (arrayItems) => {
-		for (let i = 0; i < arrayItems.length - 1; i++) {
-			if (arrayItems[i] > arrayItems[i + 1]) {
-				return false;
-			}
-		}
-		return true;
-	};
+			const isArrayItemsAscending = (arrayItems) => {
+				for (let i = 0; i < arrayItems.length - 1; i++) {
+					if (arrayItems[i] > arrayItems[i + 1]) {
+						return false;
+					}
+				}
+				return true;
+			};
 
-	const findSequenceInString = (sequence = "427", value = "") => {
-		const arrayValue = value.split("");
-		const indexesFound = [];
-		for (let i = 0; i < sequence.length; i++) {
-			const indexOf = arrayValue.indexOf(sequence[i]);
-			if (indexOf !== -1) {
-				indexesFound.push(indexOf);
-			}
-		}
+			const findSequenceInString = (sequence = "427", value = "") => {
+				const arrayValue = value.split("");
+				const indexesFound = [];
+				for (let i = 0; i < sequence.length; i++) {
+					const indexOf = arrayValue.indexOf(sequence[i]);
+					if (indexOf !== -1) {
+						indexesFound.push(indexOf);
+					}
+				}
 
-		if (
-			indexesFound.length === sequence.length &&
-			isArrayItemsAscending(indexesFound)
-		) {
-			return indexesFound;
-		}
+				if (
+					indexesFound.length === sequence.length &&
+					isArrayItemsAscending(indexesFound)
+				) {
+					return indexesFound;
+				}
 
-		return [];
-	};
+				return [];
+			};
 
-	const THE_STANLEY_PARABLE_ULTRA_DELUXE_RELEASE_DATE_IN_MS = 1651075200000;
-	const timestamp = THE_STANLEY_PARABLE_ULTRA_DELUXE_RELEASE_DATE_IN_MS;
-	const timeDiv = document.querySelector("#time");
-	const messageDiv = document.querySelector("#message");
+			const THE_STANLEY_PARABLE_ULTRA_DELUXE_RELEASE_DATE_IN_MS = 1651075200000;
+			const timestamp = THE_STANLEY_PARABLE_ULTRA_DELUXE_RELEASE_DATE_IN_MS;
+			const timeDiv = document.querySelector("#time");
+			const messageDiv = document.querySelector("#message");
 
-	setInterval(() => {
-		const now = Date.now();
-		const releaseTime = new Date(timestamp).getTime();
-		const message =
-			releaseTime - now > 0
-				? "until The Stanley Parable: Ultra Deluxe launch"
-				: "since The Stanley Parable: Ultra Deluxe launched";
-		const diff = Math.abs(releaseTime - now);
+			setInterval(() => {
+				const now = Date.now();
+				const releaseTime = new Date(timestamp).getTime();
+				const message =
+					releaseTime - now > 0
+						? "until The Stanley Parable: Ultra Deluxe launch"
+						: "since The Stanley Parable: Ultra Deluxe launched";
+				const diff = Math.abs(releaseTime - now);
 
-		const days = getDays(diff);
-		const hours = getHours(diff);
-		const minutes = getMinutes(diff);
-		const seconds = getSeconds(diff);
+				const days = getDays(diff);
+				const hours = getHours(diff);
+				const minutes = getMinutes(diff);
+				const seconds = getSeconds(diff);
 
-		const countdownString = `${days.string}${hours.string}${minutes.string}${seconds.string}`;
+				const countdownString = `${days.string}${hours.string}${minutes.string}${seconds.string}`;
 
-		const sequence = findSequenceInString("427", countdownString);
-		const tempDiv = document.createElement("div");
+				const sequence = findSequenceInString("427", countdownString);
+				const tempDiv = document.createElement("div");
 
-		for (let i = 0; i < countdownString.length; i++) {
-			const span = document.createElement("span");
-			span.innerText = countdownString[i];
-			span.style.color = sequence.includes(i) ? "yellow" : "white";
-			tempDiv.appendChild(span);
-		}
+				for (let i = 0; i < countdownString.length; i++) {
+					const span = document.createElement("span");
+					span.innerText = countdownString[i];
+					span.style.color = sequence.includes(i) ? "yellow" : "white";
+					tempDiv.appendChild(span);
+				}
 
-		timeDiv.innerHTML = tempDiv.innerHTML;
-		messageDiv.innerText = message;
-	}, 1000);
-</script>
+				timeDiv.innerHTML = tempDiv.innerHTML;
+				messageDiv.innerText = message;
+			}, 1000);
+		</script>
 
-<script>
-	// TODO: calc how much items needed for current screen size
-	// TODO: slide like animation for the wall of text
-	// TODO: make the lines unaligned
-	const theEndDiv = document.querySelector("#theEnd");
-	const theEndMessage = new Array(1000)
-		.fill(undefined)
-		.map((item) => "THE END IS NEVER")
-		.join(" ");
+		<script>
+			// TODO: calc how much items needed for current screen size
+			// TODO: slide like animation for the wall of text
+			// TODO: make the lines unaligned
+			const theEndDiv = document.querySelector("#theEnd");
+			const theEndMessage = new Array(1000)
+				.fill(undefined)
+				.map((item) => "THE END IS NEVER")
+				.join(" ");
 
-	theEndDiv.innerText = theEndMessage;
-</script>
+			theEndDiv.innerText = theEndMessage;
+		</script>
+	</body>
+</html>
