@@ -1,74 +1,86 @@
-<style>
-	html,
-	body {
-		background-color: rgba(0, 0, 0, 0);
-	}
+<head>
+	<style>
+		html,
+		body {
+			background-color: rgba(0, 0, 0, 0);
+		}
 
-	@font-face {
-		font-family: stanleyFont;
-		src: url("./LeagueGothic-Regular.ttf");
-	}
+		@font-face {
+			font-family: stanleyFont;
+			src: url("./LeagueGothic-Regular.ttf");
+		}
 
-	.countdown {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		flex-direction: column;
-	}
+		.countdown {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+		}
 
-	#message {
-		color: white;
-	}
+		#message {
+			color: white;
+		}
 
-	#time {
-		font-family: stanleyFont;
-		font-size: 20em;
-		font-weight: bold;
-		color: white;
-		display: flex;
-	}
+		#time {
+			font-family: stanleyFont;
+			font-size: 20em;
+			font-weight: bold;
+			color: white;
+			display: flex;
+		}
 
-	#time span {
-		width: 115px;
-		display: flex;
-		justify-content: center;
-	}
+		#time span {
+			width: 115px;
+			display: flex;
+			justify-content: center;
+		}
 
-	img {
-		max-width: 100vw;
-		margin: auto;
-	}
+		img {
+			max-width: 100vw;
+			margin: auto;
+		}
 
-	#theEnd {
-		position: fixed;
-		z-index: -1;
-		width: 100vw;
-		height: 100vh;
-		top: 0;
-		left: 0;
-		background-color: black;
-		color: rgba(255, 255, 255, 0.07);
-		font-family: stanleyFont;
-		text-align: justify;
-		font-size: 2em;
-	}
-</style>
-
-<div id="theEnd"></div>
-<div class="countdown">
-	<img
-		src="https://nintendoeverything.com/wp-content/uploads/The-Stanley-Parable-Ultra-Deluxe.jpg"
-	/>
-	<div id="time">
-		<span>0</span>
-		<span>0</span>:
-		<span>0</span>
-		<span>0</span>:
-		<span>0</span>
-		<span>0</span>
+		#theEnd {
+			position: fixed;
+			z-index: -1;
+			width: 100vw;
+			height: 100vh;
+			top: 0;
+			left: 0;
+			background-color: black;
+			color: rgba(255, 255, 255, 0.07);
+			font-family: stanleyFont;
+			text-align: justify;
+			font-size: 2em;
+		}
+	</style>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"
+		integrity="sha512-zhHQR0/H5SEBL3Wn6yYSaTTZej12z0hVZKOv3TwCUXT1z5qeqGcXJLLrbERYRScEDDpYIJhPC1fk31gqR783iQ=="
+		crossorigin="anonymous"
+		defer
+	></script>
+	<script src="./map.js" defer></script>
+</head>
+<body>
+	<div id="theEnd"></div>
+	<div class="countdown">
+		<img
+			src="https://nintendoeverything.com/wp-content/uploads/The-Stanley-Parable-Ultra-Deluxe.jpg"
+		/>
+		<div id="time">
+			<span>0</span>
+			<span>0</span>:
+			<span>0</span>
+			<span>0</span>:
+			<span>0</span>
+			<span>0</span>
+		</div>
+		<div id="message"></div>
 	</div>
-	<div id="message"></div>
-</div>
+
+	<canvas id="glCanvas" width="640" height="480"></canvas>
+</body>
 
 <script>
 	const getDays = (diff) => {
