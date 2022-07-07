@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <link href="./css/main.css" rel="stylesheet" />
+    <title>Document</title>
+
+    <script type="text/javascript">
+      console.log("lala");
+      const bodyRequest = JSON.stringify([
+        {
+          command: "fibery.entity/query",
+          args: {
+            query: {
+              "q/from": "Liran's space/Whats new  - variations",
+              "q/select": ["Liran's space/Title wh"],
+              "q/limit": 1,
+            },
+          },
+        },
+      ]);
+      fetch("https://steps.fibery.io/api/commands", {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Token 4fdcac86.bd162b8dfd3a10e21ce34d952aed6cd31f8",
+          "Content-Length": bodyRequest.length,
+          "Access-Control-Allow-Origin": "*",
+        },
+        redirect: "follow", // manual, *follow, error
+        body: bodyRequest, // body data type must match "Content-Type" header
+      });
+
+      //       	const Fibery = require('fibery-unofficial');
+      // const fibery = new Fibery({host: "steps.fibery.io", token: c5808a38.4508cd2dea4bdb2965f99615074c31e30ec});
+      // const schema = await fibery.getSchema();
+    </script>
+  </head>
+  <body>
+    <div class="v21_15671">
+      <div class="v21_15631">
+        <div class="v21_15632"></div>
+        <span class="v21_15633"
+          >Now you can make annoucement that would send push to your users</span
+        ><span class="v21_15634">Announcements</span>
+        <div class="v21_15686">
+          <div class="name"></div>
+          <div class="v21_15688">
+            <div class="name"></div>
+            <span class="v21_15690">Next</span>
+          </div>
+          <div class="name"></div>
+        </div>
+        <div class="v21_15636"></div>
+        <div class="v21_15637">
+          <div class="v21_15638"></div>
+          <div class="v21_15639"></div>
+          <div class="v21_15640"></div>
+          <div class="v21_15641"></div>
+          <div class="v21_15642"></div>
+        </div>
+        <div class="v21_15643">
+          <div class="v21_15644"></div>
+          <div class="name"></div>
+        </div>
+        <div class="v21_15646">
+          <div class="v21_15647"></div>
+          <div class="name"></div>
+        </div>
+        <div class="v21_15649">
+          <div class="v21_15650"></div>
+          <div class="name"></div>
+        </div>
+        <div class="v21_15652">
+          <div class="v21_15653"></div>
+          <div class="v21_15654"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
